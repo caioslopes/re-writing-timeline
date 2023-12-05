@@ -1,5 +1,9 @@
 export default class Player{
 
+    name;
+    score;
+    try;
+
     constructor(name){
         this.setName(name);
         this.score = 0;

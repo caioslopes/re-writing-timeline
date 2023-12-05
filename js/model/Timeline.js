@@ -1,6 +1,7 @@
-import ListOfCards from "./ListOfCards.js";
-
 export default class Timeline{
+
+    timeline_cards;
+    timeline_year;
 
     constructor(){
         this.timeline_cards = [null, null, null, null, null];

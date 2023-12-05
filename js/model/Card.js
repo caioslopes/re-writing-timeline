@@ -1,7 +1,6 @@
 import Api from "./Api.js";
 
 export default class Card{
-
     constructor(){
         this.card = null;
     }

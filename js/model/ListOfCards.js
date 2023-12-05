@@ -2,6 +2,8 @@ import Card from "./Card.js";
 
 export default class ListOfCards{
 
+    listOfCards;
+
     constructor(){
         this.listOfCards = [];
     }
