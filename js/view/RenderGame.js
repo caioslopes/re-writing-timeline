@@ -29,9 +29,14 @@ function renderSlot(timeline){
 /* Drag functions */
 function dragStart(e){
     e.dataTransfer.setData("id", e.target.getAttribute("data-film"));
-    /* setTimeout(() => {
+    setTimeout(() => {
         this.classList.add("invisible");
-    }, 0); */
+    }, 0);
+}
+
+function dragEnd(){
+    console.log(this);
+    this.classList.remove("invisible");
 }
 
 /* Drop function */
@@ -58,21 +63,40 @@ const dropSlots = document.querySelectorAll(".slot");
 /* Events */
 dragItems.forEach(item => {
     item.addEventListener("dragstart", dragStart);
-    /* item.addEventListener("dragend", dragEnd); */
+    item.addEventListener("dragend", dragEnd);
 })
 
 dropSlots.forEach(function(slot, index){
     slot.addEventListener("dragstart", (e) =>{
         e.dataTransfer.setData("id", e.target.getAttribute("data-film"));
+        /* slot.querySelector(".card").remove(); */
         game.timeline.removeOfTimelineCardsAt(index);
+
+        setTimeout(() => {
+            slot.querySelector(".card").classList.add("invisible");
+        }, 0);
+
         console.log(game.timeline.getTimelineCards());
     });
     slot.addEventListener("dragover", dragOver);
     slot.addEventListener("drop", (e)=>{
         e.preventDefault();
+
         const id = e.dataTransfer.getData("id");
         let card = game.listOfCards.getCardById(id);
         game.timeline.addOfTimelineCardsAt(card, index);
+
+        const template_card = document.getElementById("template_card");
+        const template = template_card.content.cloneNode(true);
+        
+        template.querySelector(".card").querySelector("img").src = "https://image.tmdb.org/t/p/w300"+card.poster_path;
+        template.querySelector(".card").querySelector("img").alt = card.title;
+        template.querySelector(".card").querySelector("img").setAttribute("data-film", card.id);
+        
+        console.log(template.querySelector(".card"));
+
+        slot.appendChild(template);
+
         console.log(game.timeline.getTimelineCards());
     });
     slot.addEventListener("dragleave", dragLeave);
