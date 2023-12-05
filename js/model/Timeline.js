@@ -8,8 +8,6 @@ export default class Timeline{
     }
 
     initTimelineYear(listOfCards){
-        console.log(listOfCards);
-
         for(let i = 0; i < listOfCards.length; i++){
             this.timeline_year[i] = listOfCards[i].release_date;
         }
@@ -29,8 +27,16 @@ export default class Timeline{
         return this.timeline_cards;
     }
 
+    getTimelineYears(){
+        return this.timeline_year;
+    }
+
     getSizeOfTimelineCards(){
         return this.timeline_cards.length;
+    }
+
+    getSizeOfTimelineYears(){
+        return this.timeline_year.length
     }
 
     addOfTimelineCardsAt(card, index){
@@ -46,6 +52,14 @@ export default class Timeline{
         let answer = false;
         if(this.timeline_cards[index] != null){
             this.timeline_cards[index] = null;
+            answer = true;
+        }
+        return answer;
+    }
+
+    checkPosition(index){
+        let answer = false;
+        if(this.getTimelineCards()[index].release_date == this.getTimelineYears()[index]){
             answer = true;
         }
         return answer;

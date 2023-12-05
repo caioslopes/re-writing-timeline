@@ -1,6 +1,6 @@
-import Player from "./Player"
-import ListOfCards from "./ListOfCards";
-import Timeline from "./Timeline"
+import Player from "./Player.js"
+import ListOfCards from "./ListOfCards.js";
+import Timeline from "./Timeline.js"
 
 export default class Game{
 
@@ -12,11 +12,26 @@ export default class Game{
 
     async initGame(){
         await this.listOfCards.initListOfCards();
-        this.timeline.initTimelineYear();
+        this.timeline.initTimelineYear(this.listOfCards.getListOfCards());
     }
 
-    checkingTimeline(timeline){
-        
+    checkTimeline(timeline){
+        let correct = true;
+        let i = 0;
+
+        while(i < timeline.getSizeOfTimelineYears() && correct){
+            if(!timeline.checkPosition(i)){
+                correct = false;
+            }
+        }
+
+        if(correct){
+            this.player.calculateScore();
+        }else{
+            this.player.decrementTry();
+        }
+
+        return correct;
     }
 
 }

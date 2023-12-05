@@ -10,6 +10,16 @@ export default class ListOfCards{
         return this.listOfCards;
     }
 
+    getCardById(id){
+        let answer = null;
+        this.listOfCards.forEach(item =>{
+            if(item.id == id){
+                answer = item;
+            }
+        })
+        return answer;
+    }
+
     getSizeListOfCards(){
         return this.listOfCards.length;
     }
