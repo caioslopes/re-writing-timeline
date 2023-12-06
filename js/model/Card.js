@@ -16,21 +16,7 @@ export default class Card{
 
         do{
             temp = await this.tryConsult(temp);
-            if(temp.poster_path == null){
-                console.log("errei fui mlk");
-            }
         }while(temp.poster_path == null);
-
-        /* if(temp.poster_path == null){
-           await this.createCard();
-           console.log("entrei e pedi dnv");
-        }else{
-            console.log(temp);
-
-            temp.release_date = temp.release_date.slice(0,4);
-            this.card = temp;
-        } */
-
 
         console.log(temp);
 

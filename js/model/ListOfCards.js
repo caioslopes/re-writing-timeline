@@ -27,19 +27,21 @@ export default class ListOfCards{
     }
 
     async #increasingListOfCards(){
+        let answer = true
         const card = new Card();
         await card.createCard();
 
         if(this.getSizeListOfCards() == 0){
             this.listOfCards.push(card.getCard());
         }else{
-            if(this.#dateAlreadyExist(card.getCard().release_date)){
-                this.#increasingListOfCards();
-            }else{
+            if(!this.#dateAlreadyExist(card.getCard().release_date)){
                 this.listOfCards.push(card.getCard());
+            }else{
+                answer = false
             }
         }
-    } 
+        return answer
+    }
 
     #dateAlreadyExist(date){
         let answer = false;
@@ -52,8 +54,11 @@ export default class ListOfCards{
     }
 
     async initListOfCards(){
+        let flag = false
         for(let i = 0; i < 5; i++){
-            await this.#increasingListOfCards();
+            do{
+                flag = await this.#increasingListOfCards();
+            }while(flag == false);
         }
     }
 
