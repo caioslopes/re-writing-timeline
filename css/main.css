@@ -20,11 +20,20 @@
     position: absolute;
     bottom: -25px;
 }
+.correct_card{
+    pointer-events: none;
+    background-color: green;
+}
 .correct{
-    border: 3px solid green;
+    border: 3px solid green!important;
+    opacity: .7;
 }
 .wrong{
-    border: 3px solid red;
+    border: 3px solid red!important;
+}
+.heart_low{
+    transform: scale(.7);
+    opacity: .7;
 }
 
 /* Classes */
@@ -32,6 +41,7 @@
     display: flex;
     cursor: grab;
     max-width: 120px;
+    border-radius: 10px;
 }
 .card img{
     width: 100%;
@@ -42,8 +52,32 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
 
     position: relative;
+    min-width: 120px;
+    min-height: 180px;
+
+    border: 1px solid;
+    border-radius: 10px;
+}
+.year{
+    position: absolute;
+    bottom: -30px;
+}
+.action{
+    display: flex;
+    justify-content: center;
+}
+.icon_heart{
+    width: 50px;
+}
+.score_box{
+    font-weight: bold;
+    font-size: 1rem;
+
+    text-align: center;
+    margin-top: 20px;
 }
 
 /* Identifiers */
@@ -56,9 +90,14 @@
     flex-direction: column;
     justify-content: space-around;
     padding: 30px;
+
+    background-color: #23232e;
+    color: #fff;
 }
 #title{
     text-align: center;
+    position: absolute;
+    top: 30px;
 }
 #cards{
     display: flex;
@@ -68,4 +107,14 @@
 #timeline{
     display: flex;
     justify-content: space-between;
+}
+#try{
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+}
+#submit{
+    cursor: pointer;
+    padding: 10px;
+    font-size: 1.2rem;
 }

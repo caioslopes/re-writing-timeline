@@ -3,9 +3,18 @@ import Game from "../model/Game.js"
 export default class RenderGame{
 
     static dragging = false;
+    static playing; // 0 == playing; -1 == defeat;
 
     constructor(){
         this.content = document.querySelector("#content");
+    }
+
+    static updatePlaying(player){
+        if(player.getTry() == 0){
+            this.playing = -1;
+        }else{
+            this.playing = 0;
+        }
     }
 
     /* Render Methods */
@@ -64,10 +73,12 @@ export default class RenderGame{
                 div.querySelector("img").setAttribute("data-film", card.id);
                 if(!slot[index].querySelector(".card")){
                     slot[index].append(div);
+                    slot[index].querySelector("svg").classList.add("invisible");
                 }
             }else{
                 if(slot[index].querySelector(".card")){
                     slot[index].querySelector(".card").remove();
+                    slot[index].querySelector("svg").classList.remove("invisible");
                 }
             }
         });
@@ -95,38 +106,74 @@ export default class RenderGame{
         console.log(game.player.getScore());
     }
 
-    async renderGame(){
+    static renderHeart(player){
+        const pos = document.querySelector("#try");
+        for(let i = 0; i < player.getTry(); i++){
+            const img = document.createElement("img");
+            img.className = "icon_heart"
+            img.src = "/assets/heart.svg";
+            pos.append(img);
+        }
+    }
 
+    static updateHeart(player){
+        const hearts = document.querySelectorAll(".icon_heart");
+
+        let i = 0;
+        while(i < player.getTry()){
+            i++;
+        }
+
+        hearts[i].classList.add("heart_low");
+    }
+
+    static renderScore(player){
+        const score = document.querySelector("#score");
+        score.innerText = player.getScore();
+    }
+
+    async renderGame(){
         const game = new Game("Zé");
         await game.initGame();
 
         this.renderCard(game.listOfCards);
         this.renderSlot(game.timeline);
 
+        RenderGame.renderHeart(game.player);
+        RenderGame.renderScore(game.player);
+        RenderGame.updatePlaying(game.player);
+
         const dragItems = document.querySelectorAll(".card");
         const dropSlots = document.querySelectorAll(".slot");
         const submit = document.querySelector("#submit");
 
         submit.addEventListener("click", () => {
-            if(game.timeline.getSizeOfTimelineCards() == game.listOfCards.getSizeListOfCards()){
-                if(game.checkTimeline(game.timeline)){
-                    dropSlots.forEach(slot => {
-                        slot.classList.add("correct");
-                    })
+            if(RenderGame.playing == 0){
+                if(game.timeline.getSizeOfTimelineCards() == game.listOfCards.getSizeListOfCards()){
+                    if(game.checkTimeline(game.timeline)){
+                        dropSlots.forEach(slot => {
+                            slot.querySelector(".card").classList.add("correct_card");
+                            slot.querySelector(".card").querySelector("img").classList.add("correct");
+                        })
+                    }else{
+                        dropSlots.forEach(function(slot, index) {
+                            if(!game.timeline.checkPosition(index)){
+                                slot.querySelector(".card").querySelector("img").classList.add("wrong");
+                            }else{
+                                slot.querySelector(".card").classList.add("correct_card");
+                                slot.querySelector(".card").querySelector("img").classList.add("correct");
+                            }
+                        })
+                    }
+                    RenderGame.showOnLogPlayer(game);
+                    RenderGame.updateHeart(game.player);
+                    RenderGame.renderScore(game.player);
                 }else{
-                    dropSlots.forEach(function(slot, index) {
-                        if(!game.timeline.checkPosition(index)){
-                            slot.classList.add("wrong");
-                    
-                        }else{
-                            slot.classList.add("correct");
-                        }
-                    })
-                }   
+                    alert("Preencha toda a timeline!");
+                }
             }else{
-                alert("Preencha toda a timeline!");
+                alert("Perdeu");
             }
-            RenderGame.showOnLogPlayer(game);
         })
 
         dragItems.forEach(item => {
@@ -151,7 +198,6 @@ export default class RenderGame{
         
             });
             slot.addEventListener("dragover", (e)=>{
-        
                 e.preventDefault();
                 slot.classList.add("over");
             });
@@ -166,21 +212,15 @@ export default class RenderGame{
                 if(!game.timeline.addOfTimelineCardsAt(card, index)){
                     RenderGame.recoverCard(dragItems, id);
                 }
-
                 RenderGame.renderSlotCard(game.timeline);
                 RenderGame.updateListOfCards(game.timeline, dragItems);
-
-        
         
             });
             slot.addEventListener("dragleave", (e) => {
-        
                 e.preventDefault();
                 slot.classList.remove("over");
             });
             slot.addEventListener("dragend", () => {
-        
-        
                 let id = slot.querySelector("img").getAttribute("data-film");
                 RenderGame.recoverCard(dragItems, id);
                 RenderGame.renderSlotCard(game.timeline);
