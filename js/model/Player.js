@@ -27,7 +27,9 @@ export default class Player{
     }
 
     decrementTry(){
-        this.try -= 1;
+        if(this.try > 0){
+            this.try -= 1;
+        }
     }
 
     getTry(){

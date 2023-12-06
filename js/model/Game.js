@@ -19,10 +19,16 @@ export default class Game{
         let correct = true;
         let i = 0;
 
-        while(i < timeline.getSizeOfTimelineYears() && correct){
+/*       for(let i = 0; i < timeline.getSizeOfTimelineYears() && correct; i++){
+
+        } */
+
+        while(i < timeline.getSizeOfTimelineYears() && correct == true){
             if(!timeline.checkPosition(i)){
                 correct = false;
+                break;
             }
+            i++;
         }
 
         if(correct){

@@ -15,8 +15,8 @@ export default class Card{
         let i = this.#getRandomArbitrary(0, 19);
 
         const data = await api.consult(`https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=pt-BR&region=br&page=1&primary_release_year=${n}&sort_by=revenue.desc`);
-
         let temp = data.results[i];
+
         temp.release_date = temp.release_date.slice(0,4);
         this.card = temp;
     }

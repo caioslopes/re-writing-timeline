@@ -2,8 +2,10 @@ import Game from "../model/Game.js"
 
 export default class RenderGame{
 
+    static dragging = false;
+
     constructor(){
-        this.content = document.querySelector("#content"); 
+        this.content = document.querySelector("#content");
     }
 
     /* Render Methods */
@@ -19,6 +21,26 @@ export default class RenderGame{
         });
     }
 
+    static updateListOfCards(timeline, list){
+        timeline.getTimelineCards().forEach(card => {
+            if(card != null){
+                list.forEach(item => {
+                    if(item.querySelector("img").getAttribute("data-film") == card.id){
+                        item.classList.add("invisible");
+                    }
+                })
+            }
+        })
+    }
+
+    static recoverCard(list, id){
+        list.forEach(item => {
+            if(item.querySelector("img").getAttribute("data-film") == id){
+                item.classList.remove("invisible");
+            }
+        })
+    }
+
     renderSlot(timeline){
         const pos = document.querySelector("#timeline");
         const template_slot = document.getElementById("template_slot");
@@ -30,35 +52,51 @@ export default class RenderGame{
         })
     }
 
+    static renderSlotCard(timeline){
+        const slot = document.querySelectorAll(".slot");
+        const template_card = document.getElementById("template_card");
+
+        timeline.getTimelineCards().forEach(function(card, index){
+            if(card != null){
+                const div = template_card.content.cloneNode(true);
+                div.querySelector("img").src = "https://image.tmdb.org/t/p/w300"+card.poster_path;
+                div.querySelector("img").alt = card.title;
+                div.querySelector("img").setAttribute("data-film", card.id);
+                if(!slot[index].querySelector(".card")){
+                    slot[index].append(div);
+                }
+            }else{
+                if(slot[index].querySelector(".card")){
+                    slot[index].querySelector(".card").remove();
+                }
+            }
+        });
+    }
+
     /* Drag Methods */
     dragStart(e){
-        console.log("Dragging!");
         e.dataTransfer.setData("id", e.target.getAttribute("data-film"));
+        RenderGame.dragging = true;
         setTimeout(() => {
             this.classList.add("invisible");
         }, 0);
     }
 
     dragEnd(){
-        console.log("Drag End!");
-        console.log(this);
-        this.classList.remove("invisible");
+        if(RenderGame.dragging){
+            this.classList.remove("invisible");
+        }
     }
 
-    /* dragOver(e){
-        console.log("Drag Over!");
-        e.preventDefault();
-        this.classList.add("over");
+    /* Player */
+    static showOnLogPlayer(game){
+        console.log(game.player.getName());
+        console.log(game.player.getTry());
+        console.log(game.player.getScore());
     }
-
-    dragLeave(e){
-        console.log("Drag Leave!");
-        e.preventDefault();
-        this.classList.remove("over");
-    } */
 
     async renderGame(){
-        console.log("chegou aqu! - Render");
+
         const game = new Game("Zé");
         await game.initGame();
 
@@ -67,6 +105,29 @@ export default class RenderGame{
 
         const dragItems = document.querySelectorAll(".card");
         const dropSlots = document.querySelectorAll(".slot");
+        const submit = document.querySelector("#submit");
+
+        submit.addEventListener("click", () => {
+            if(game.timeline.getSizeOfTimelineCards() == game.listOfCards.getSizeListOfCards()){
+                if(game.checkTimeline(game.timeline)){
+                    dropSlots.forEach(slot => {
+                        slot.classList.add("correct");
+                    })
+                }else{
+                    dropSlots.forEach(function(slot, index) {
+                        if(!game.timeline.checkPosition(index)){
+                            slot.classList.add("wrong");
+                    
+                        }else{
+                            slot.classList.add("correct");
+                        }
+                    })
+                }   
+            }else{
+                alert("Preencha toda a timeline!");
+            }
+            RenderGame.showOnLogPlayer(game);
+        })
 
         dragItems.forEach(item => {
             item.addEventListener("dragstart", this.dragStart);
@@ -75,46 +136,55 @@ export default class RenderGame{
 
         dropSlots.forEach(function(slot, index){
             slot.addEventListener("dragstart", (e) =>{
+                RenderGame.dragging = true;
                 e.dataTransfer.setData("id", e.target.getAttribute("data-film"));
-                /* slot.querySelector(".card").remove(); */
+
                 game.timeline.removeOfTimelineCardsAt(index);
-        
+                slot.classList.remove("wrong");
+                
                 setTimeout(() => {
-                    slot.querySelector(".card").classList.add("invisible");
+                    slot.querySelectorAll(".card").forEach(card =>{
+                        card.classList.add("invisible");
+                    })
                 }, 0);
+                
         
-                console.log(game.timeline.getTimelineCards());
             });
             slot.addEventListener("dragover", (e)=>{
-                console.log("Drag Over!");
+        
                 e.preventDefault();
                 slot.classList.add("over");
             });
             slot.addEventListener("drop", (e)=>{
+                RenderGame.dragging = false;
                 e.preventDefault();
-        
+                slot.classList.remove("over");
+
                 const id = e.dataTransfer.getData("id");
                 let card = game.listOfCards.getCardById(id);
-                game.timeline.addOfTimelineCardsAt(card, index);
+
+                if(!game.timeline.addOfTimelineCardsAt(card, index)){
+                    RenderGame.recoverCard(dragItems, id);
+                }
+
+                RenderGame.renderSlotCard(game.timeline);
+                RenderGame.updateListOfCards(game.timeline, dragItems);
+
         
-                const template_card = document.getElementById("template_card");
-                const template = template_card.content.cloneNode(true);
-                
-                template.querySelector(".card").querySelector("img").src = "https://image.tmdb.org/t/p/w300"+card.poster_path;
-                template.querySelector(".card").querySelector("img").alt = card.title;
-                template.querySelector(".card").querySelector("img").setAttribute("data-film", card.id);
-                
-                console.log(template.querySelector(".card"));
         
-                slot.appendChild(template);
-        
-                console.log(game.timeline.getTimelineCards());
             });
             slot.addEventListener("dragleave", (e) => {
-                console.log("Drag Leave!");
+        
                 e.preventDefault();
                 slot.classList.remove("over");
             });
+            slot.addEventListener("dragend", () => {
+        
+        
+                let id = slot.querySelector("img").getAttribute("data-film");
+                RenderGame.recoverCard(dragItems, id);
+                RenderGame.renderSlotCard(game.timeline);
+            })
         })
     }
 }

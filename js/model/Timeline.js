@@ -20,8 +20,6 @@ export default class Timeline{
                 return 1;
             }
         })
-
-        console.log(this.timeline_year);
     }
 
     getTimelineCards(){
@@ -33,7 +31,13 @@ export default class Timeline{
     }
 
     getSizeOfTimelineCards(){
-        return this.timeline_cards.length;
+        let size = 0;
+        this.timeline_cards.forEach(card => {
+            if(card != null){
+                size += 1;
+            }
+        })
+        return size;
     }
 
     getSizeOfTimelineYears(){

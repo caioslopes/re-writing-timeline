@@ -19,9 +19,4 @@ export default class Api{
         return data;
     }
 
-    async showOnLog(url){
-        const data = await this.consult(url);
-        console.log(data);
-    }
-
 }
