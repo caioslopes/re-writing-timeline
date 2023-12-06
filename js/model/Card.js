@@ -11,14 +11,11 @@ export default class Card{
 
     async createCard(){
         
-        let consult = false;
         let temp = null;
 
         do{
             temp = await this.tryConsult(temp);
         }while(temp.poster_path == null);
-
-        console.log(temp);
 
         temp.release_date = temp.release_date.slice(0,4);
         this.card = temp;

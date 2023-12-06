@@ -31,14 +31,10 @@ export default class ListOfCards{
         const card = new Card();
         await card.createCard();
 
-        if(this.getSizeListOfCards() == 0){
+        if(!this.#dateAlreadyExist(card.getCard().release_date)){
             this.listOfCards.push(card.getCard());
         }else{
-            if(!this.#dateAlreadyExist(card.getCard().release_date)){
-                this.listOfCards.push(card.getCard());
-            }else{
-                answer = false
-            }
+            answer = false
         }
         return answer
     }

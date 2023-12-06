@@ -37,6 +37,11 @@ export default class Player{
     }
 
     calculateScore(){
+        /* if(this.try == 3){
+            this.score = 100;
+        }else{
+            this.score = (this.try * 25)
+        } */
         this.score = (this.try * 33) + 1;
     }
 

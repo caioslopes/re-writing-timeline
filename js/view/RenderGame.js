@@ -1,5 +1,6 @@
 import Game from "../model/Game.js"
 
+
 export default class RenderGame{
 
     static dragging = false;

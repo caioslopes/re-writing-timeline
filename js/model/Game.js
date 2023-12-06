@@ -1,13 +1,14 @@
 import Player from "./Player.js"
 import ListOfCards from "./ListOfCards.js";
 import Timeline from "./Timeline.js"
+import Ranking from "./Ranking.js"
 
 export default class Game{
 
     constructor(name){
         this.player = new Player(name);
         this.listOfCards = new ListOfCards();
-        this.timeline = new Timeline();
+        this.timeline = new Timeline();        
     }
 
     async initGame(){
