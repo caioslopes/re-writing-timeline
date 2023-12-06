@@ -111,7 +111,7 @@ export default class RenderGame{
         for(let i = 0; i < player.getTry(); i++){
             const img = document.createElement("img");
             img.className = "icon_heart"
-            img.src = "/assets/heart.svg";
+            img.src = "./assets/heart.svg";
             pos.append(img);
         }
     }
@@ -166,7 +166,11 @@ export default class RenderGame{
                         })
                     }
                     RenderGame.showOnLogPlayer(game);
-                    RenderGame.updateHeart(game.player);
+                    try{
+                        RenderGame.updateHeart(game.player);
+                    }catch(e){
+                        console.log(e);
+                    }
                     RenderGame.renderScore(game.player);
                 }else{
                     alert("Preencha toda a timeline!");
