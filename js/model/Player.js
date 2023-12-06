@@ -37,7 +37,7 @@ export default class Player{
     }
 
     calculateScore(){
-        this.score = this.try * 33;
+        this.score = (this.try * 33) + 1;
     }
 
 }
