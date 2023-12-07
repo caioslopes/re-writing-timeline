@@ -31,9 +31,12 @@ export default class Game{
 
         if(correct){
             this.player.calculateScore();
+            this.ranking.refreshRanking(this.player);
         }else{
             this.player.decrementTry();
         }
+
+        this.ranking.sortRank();
 
         return correct;
     }
