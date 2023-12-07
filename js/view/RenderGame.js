@@ -316,32 +316,37 @@ export default class RenderGame{
 
     /* Submit Event */
     static submitEvent(listSlot){
-        console.log("Click");
-        if(RenderGame.game.timeline.getSizeOfTimelineCards() == RenderGame.game.listOfCards.getSizeListOfCards()){
-            if(RenderGame.game.checkTimeline(RenderGame.game.timeline)){
-                listSlot.forEach(slot => {
-                    slot.querySelector(".card").classList.add("correct_card");
-                    slot.querySelector(".card").querySelector("img").classList.add("correct");
-                })
-            }else{
-                listSlot.forEach(function(slot, index){
-                    if(!RenderGame.game.timeline.checkPosition(index)){
-                        slot.querySelector(".card").querySelector("img").classList.add("wrong");
-                    }else{
+        if(RenderGame.game.player.getTry()){    
+            if(RenderGame.game.timeline.getSizeOfTimelineCards() == RenderGame.game.listOfCards.getSizeListOfCards()){
+                if(RenderGame.game.checkTimeline(RenderGame.game.timeline)){
+                    listSlot.forEach(slot => {
                         slot.querySelector(".card").classList.add("correct_card");
                         slot.querySelector(".card").querySelector("img").classList.add("correct");
-                    }
-                })
+                    })
+                    setTimeout(() => {
+                        RenderGame.renderWin(); 
+                    }, 1000);
+                }else{
+                    listSlot.forEach(function(slot, index){
+                        if(!RenderGame.game.timeline.checkPosition(index)){
+                            slot.querySelector(".card").querySelector("img").classList.add("wrong");
+                        }else{
+                            slot.querySelector(".card").classList.add("correct_card");
+                            slot.querySelector(".card").querySelector("img").classList.add("correct");
+                        }
+                    })
+                }
+    
+                try{
+                    RenderGame.upadeteTry(RenderGame.game.player);
+                }catch(e){
+                    console.log(e);
+                }
+    
+                RenderGame.renderScore(RenderGame.game.player);
+            }else{
+                alert("Preencha toda a timeline!");
             }
-            /* RenderGame.showOnLogPlayer(game);
-            try{
-                RenderGame.updateHeart(game.player);
-            }catch(e){
-                console.log(e);
-            }
-            RenderGame.renderScore(game.player); */
-        }else{
-            alert("Preencha toda a timeline!");
         }
     }
 
@@ -437,6 +442,15 @@ export default class RenderGame{
         score.innerText = player.getScore();
     }
 
+    /* Render Screens */
+    static renderWin(){
+        document.querySelector("#win").classList.add("visible");
+    }
+
+    static renderLose(){
+        document.querySelector("#lose").classList.add("visible");
+    }
+
     static async runGame(){
         RenderGame.game = new Game("Guess");
         await RenderGame.game.initGame();
@@ -480,6 +494,13 @@ export default class RenderGame{
         /* Updating slot of cards of timeline */
         setInterval(() => {
             RenderGame.renderSlotCards(RenderGame.game.timeline);
+        }, 100);
+
+        /* Watching try */
+        setInterval(() => {
+            if(!RenderGame.game.player.getTry()){
+                RenderGame.renderLose(); 
+            }
         }, 100);
 
         submit.addEventListener("click", ()=>{RenderGame.submitEvent(listSlot)});
