@@ -1,6 +1,24 @@
 /* Import Font */
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 
+@media (min-width: 900px) {
+    .body{
+        display: block;
+    }
+    .off-resolution{
+        display: none;
+    }
+}
+
+@media (max-width: 899px) {
+    .body{
+        display: none;
+    }
+    .off-resolution{
+        display: block;
+    }
+}   
+
 /* Geral */
 *{
     padding: 0;
@@ -96,13 +114,79 @@ svg.bi.bi-plus-circle{
     background: #23232e;
     color: #fff;
     transition: .5s ease-in-out;
+    transition: 1s ease-in;
 }
-.screen span{
+.acessing{
     position: relative;
     top: 50%;
     left: 50%;
+    transform: translate(-50%,-50%);
+    width: 400px;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+}
+.form{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.form input{
+    padding: 10px;
+    border-radius: 10px;
+}
+button{
+    font-weight: bold!important;
+}
+.title_game{
+    text-align: center;
+    position: relative;
+    top: 30%;
+}
+.info_screen{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+
+    border: 1px solid;
+    border-radius: 20px;
+    box-shadow: 6px 6px #f1f1f1;
+    padding: 40px 0px;
+}
+.box_score{
+    border: 1px solid;
+    border-radius: 20px 6px;
+    padding: 20px;
+    min-width: fit-content;
+    background: #fff;
+    color: #000;
+    font-weight: bold;
+}
+.off-resolution{
+    top: 50%;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
+/* Bootstrap */
+.offcanvas{
+    background-color: #23232e;
+    color: #fff;
+}
+.btn-close{
+    background-image: unset;
+    width: fit-content;
+    height: fit-content;
+    opacity: 1;
+}
+.table{
+    --bs-table-bg: unset;
+    --bs-table-color: #fff;
+    --bs-table-striped-color: #d7d7d7;
+    --bs-table-striped-bg: #303043;
+}
 /* Identifiers */
 #content{
     position: fixed;
@@ -116,6 +200,7 @@ svg.bi.bi-plus-circle{
 
     background-color: #23232e;
     color: #fff;
+    transition: 1s ease-in;
 }
 #title{
     text-align: center;
@@ -141,4 +226,17 @@ svg.bi.bi-plus-circle{
     cursor: pointer;
     padding: 10px;
     font-size: 1.2rem;
+}
+#btn_ranking{
+    cursor: pointer;
+    position: absolute;
+    z-index: 3;
+    right: 0;
+    top: 10%;
+    background: #103a62;
+    color: #fff;
+    padding: 10px;
+    font-weight: bold;
+    border-radius: 0;
+    border: unset;
 }

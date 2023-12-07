@@ -111,6 +111,9 @@ export default class RenderGame{
                 }
     
                 RenderGame.renderScore(RenderGame.game.player);
+
+                RenderGame.refreshRanking();
+                RenderGame.renderRanking();
             }else{
                 alert("Preencha toda a timeline!");
             }
@@ -209,6 +212,26 @@ export default class RenderGame{
         score.innerText = player.getScore();
     }
 
+    static renderRanking(){
+        const ranking = window.localStorage.getItem("ranking");
+        const tbody = document.querySelector("#tbody");
+        const template_line = document.querySelector("#template_line");
+
+        /* ranking_text.innerText = ranking; */
+
+        ranking.split("\n").forEach( line => {
+            const template = template_line.content.cloneNode(true);
+            template.querySelector(".name").innerText = line.split(",")[0];
+            template.querySelector(".score").innerText = line.split(",")[1];
+            tbody.append(template);
+        } )
+    }
+
+    static refreshRanking(){
+        const tbody = document.querySelector("#tbody");
+        tbody.innerHTML = "";
+    }
+
     /* Render Screens */
     static renderStart(){
         const screenStart = document.querySelector("#start");
@@ -223,11 +246,12 @@ export default class RenderGame{
                 RenderGame.game = new Game(input.value);
                 await RenderGame.runGame(input.value);
             }else{
-                alert("O campo nome não pode estar vazio!");
+                alert("O campo nickname não pode estar vazio!");
             }
         })
 
-
+        RenderGame.refreshRanking();
+        RenderGame.renderRanking();
     }
 
     static renderWin(){
@@ -254,6 +278,9 @@ export default class RenderGame{
     static async runGame(){
         /* RenderGame.game = new Game("Guess"); */
         await RenderGame.game.initGame();
+
+        RenderGame.refreshRanking();
+        RenderGame.renderRanking();
 
         RenderGame.renderCards(RenderGame.game.listOfCards);
         RenderGame.renderYears(RenderGame.game.timeline);
