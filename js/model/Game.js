@@ -8,7 +8,8 @@ export default class Game{
     constructor(name){
         this.player = new Player(name);
         this.listOfCards = new ListOfCards();
-        this.timeline = new Timeline();        
+        this.timeline = new Timeline();    
+        this.ranking = new Ranking(this.player);    
     }
 
     async initGame(){
