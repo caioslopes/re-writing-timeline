@@ -6,7 +6,6 @@ export default class Ranking {
       this.initRanking(player);
     }
 
-    //mak a function to add a player to the ranking if he doesn't exist
     initRanking(player){
       let data = localStorage.getItem('ranking');
       let csvLines = data ? data.split('\n') : [];
@@ -69,8 +68,6 @@ export default class Ranking {
       localStorage.setItem('ranking', '');
     }
 
-
-    //make a function to sort the local storage data
     sortRank(){
       let data = localStorage.getItem('ranking');
       let csvLines = data ? data.split('\n') : [];
@@ -80,9 +77,6 @@ export default class Ranking {
       const newData = csvLinesSorted.join('\n');
       localStorage.setItem('ranking', newData);
     }
-
-
-
 
   }
   

@@ -275,7 +275,6 @@ export default class RenderGame{
     }
 
     static async runGame(){
-        /* RenderGame.game = new Game("Guess"); */
         await RenderGame.game.initGame();
 
         RenderGame.refreshRanking();
@@ -299,11 +298,9 @@ export default class RenderGame{
         });
         
         listSlot.forEach(function(slot, index) {
-            /* slot.addEventListener("dragstart", RenderGame.dragStart); */
             slot.addEventListener("dragover", RenderGame.dragOver);
             slot.addEventListener("dragleave", RenderGame.dragLeave);
             slot.addEventListener("drop", (e) =>{RenderGame.dragDrop(e, slot, index, listCard)});
-            /* slot.addEventListener("dragend", RenderGame.dragEnd); */
         });
 
         /* Updating EventListiner of cards in slot */
