@@ -217,10 +217,9 @@ export default class RenderGame{
         const tbody = document.querySelector("#tbody");
         const template_line = document.querySelector("#template_line");
 
-        /* ranking_text.innerText = ranking; */
-
-        ranking.split("\n").forEach( line => {
+        ranking.split("\n").forEach( function(line, index) {
             const template = template_line.content.cloneNode(true);
+            template.querySelector(".id").innerText = index+1;
             template.querySelector(".name").innerText = line.split(",")[0];
             template.querySelector(".score").innerText = line.split(",")[1];
             tbody.append(template);
