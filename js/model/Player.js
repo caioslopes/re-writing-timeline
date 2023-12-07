@@ -42,7 +42,7 @@ export default class Player{
         }else{
             this.score = (this.try * 25)
         } */
-        this.score = (this.try * 33) + 1;
+        this.score += (this.try * 33) + 1;
     }
 
 }

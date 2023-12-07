@@ -15,6 +15,7 @@
 }
 .over{
     background-color: blue;
+    transform: scale(1.1);
 }
 .bottom_position{
     position: absolute;
@@ -45,8 +46,8 @@
 }
 .card img{
     width: 100%;
-    border: 1px solid;
     border-radius: 10px;
+    border: 2px solid #b7b7b7;
 }
 .slot{
     display: flex;
@@ -58,8 +59,9 @@
     min-width: 120px;
     min-height: 180px;
 
-    border: 1px solid;
     border-radius: 10px;
+    background: #b7b7b7;
+    box-shadow: 5px 5px #989595;
 }
 .year{
     position: absolute;
@@ -78,6 +80,9 @@
 
     text-align: center;
     margin-top: 20px;
+}
+svg.bi.bi-plus-circle{
+    color: #000;
 }
 
 /* Identifiers */
@@ -102,11 +107,12 @@
 #cards{
     display: flex;
     justify-content: center;
-    gap: 10px;
+    gap: 20px;
 }
 #timeline{
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
+    gap: 60px;
 }
 #try{
     display: flex;
